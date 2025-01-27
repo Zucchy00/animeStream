@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="it">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+		%sveltekit.head%
+		<title>AnimeStream</title>
+		<link rel="icon" href="/favicon.ico" />
+	</head>
+	<body data-sveltekit-preload-data="hover" class="bg-black transition ease-in dark:ease-out duration-1000">
+		<div style="display: contents">%sveltekit.body%</div>
+	</body>
+</html>
+<script>
+	if (localStorage.theme === 'dark') {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
+</script>

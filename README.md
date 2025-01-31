@@ -1,5 +1,5 @@
 # AnimeStream
-Sveltekit based anime streaming website with webscraping api as usage (no link to the website being scraped for consistency reasons)
+Sveltekit based anime streaming website with webscraping api as usage (no link to the website being scraped for consistency reasons, after getting a decent amount of link of anime videos the scraped anime website link will be available)
 
 ## Features:
 * Available Dub and Sub anime ita

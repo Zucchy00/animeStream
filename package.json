@@ -89,6 +89,7 @@
 		"simple-oauth2": "^5.1.0",
 		"stream": "^0.0.3",
 		"svelte-chartjs": "^3.1.5",
+		"svelte-flags": "^1.0.3",
 		"tsm": "^2.3.0",
 		"url": "^0.11.4",
 		"uuid": "^10.0.0",

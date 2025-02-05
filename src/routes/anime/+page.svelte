@@ -6,6 +6,7 @@
     import { fetchAnime } from "$lib/logic/main";
     import { fade } from 'svelte/transition';
     import { v4 } from "uuid";
+    import { load } from "cheerio";
 
     let anime:any
     let id:number
@@ -17,22 +18,33 @@
     let episodeGroups: number[][] = [];
     let choosenGroupEpisodes:number = 0
     let displayedEpisodes: Array<{ number: number; id: string }>  = [];
+
+    let loaded:boolean = false
     onMount(() => {
         // Example usage:
         id = parseInt($page.url.searchParams.get("id") ?? "0", 10);
         fetchAnimeById(id).then((data) => {
             console.log(data)
             anime = data
-            totalEpisodes = anime.isFinished
+            if((anime.isFinished && anime.episodes) || anime.nextAiringEpisode) {
+                totalEpisodes = anime.isFinished
                 ? anime.episodes
                 : anime.nextAiringEpisode.episode - 1;
+                console.log(anime.nextAiringEpisode)
+            }
 
             generateEpisodeGroups(); // Generate episode groups dynamically
-            console.log(anime.nextAiringEpisode)
         });
+        setTimeout(()=>{
+            if(!loaded) {
+                anime = false
+                loaded = true
+            }
+        }, 3000)
     });
 
     function showPage() {
+        loaded = true
         setTimeout(()=>{showImage = true}, 500)
         setTimeout(()=>{showTexts = true}, 1000)
         setTimeout(()=>{showPlayButton = true}, 1300)
@@ -52,12 +64,14 @@
 
     function generateEpisodeGroups() {
         episodeGroups = [];
-        for (let i = 1; i <= totalEpisodes; i += 100) {
-            const start = i;
-            const end = Math.min(i + 99, totalEpisodes);
-            episodeGroups.push([start, end]);
+        if(totalEpisodes >=1) {
+            for (let i = 1; i <= totalEpisodes; i += 100) {
+                const start = i;
+                const end = Math.min(i + 99, totalEpisodes);
+                episodeGroups.push([start, end]);
+            }
+            updateDisplayedEpisodes();
         }
-        updateDisplayedEpisodes();
     }
 </script>
 
@@ -88,9 +102,11 @@
                         <div class="w-fit h-full aspect-square flex items-center justify-center">
                             <PlayFill class="w-[70%] h-[70%] text-white"/>
                         </div>
-                        <div class="h-full w-full flex items-center justify-start pl-5 text-white font-semibold text-sm">
-                            Play Episode {anime.isFinished ? anime.episodes : anime.nextAiringEpisode.episode - 1}
-                        </div>
+                        {#if (anime.isFinished && anime.episodes) || anime.nextAiringEpisode}
+                            <div class="h-full w-full flex items-center justify-start pl-5 text-white font-semibold text-sm">
+                                Play Episode {anime.isFinished ? anime.episodes : anime.nextAiringEpisode.episode - 1}
+                            </div>
+                        {/if}
                     </button>
                 </div>
             </div>
@@ -127,20 +143,22 @@
                         </div>
                     </div>
                     {#if !anime.isFinished}
-                        <div class="w-full h-[10%] flex space-x-2 items-center justify-start px-[5%] text-white">
-                            <div class="font-semibold text-2xl flex items-center justify-center h-full">
-                                Next episode:
+                        {#if anime.nextAiringEpisode}
+                            <div class="w-full h-[10%] flex space-x-2 items-center justify-start px-[5%] text-white">
+                                <div class="font-semibold text-2xl flex items-center justify-center h-full">
+                                    Next episode:
+                                </div>
+                                <div class="flex items-center justify-center h-full text-xl mt-1">
+                                    {anime.nextAiringEpisode.episode}
+                                </div>
+                                <div class="font-semibold text-2xl flex items-center justify-center h-full">
+                                    Date:
+                                </div>
+                                <div class="flex items-center justify-center h-full text-xl mt-1">
+                                    {anime.nextAiringEpisode.airingAt}
+                                </div>
                             </div>
-                            <div class="flex items-center justify-center h-full text-xl mt-1">
-                                {anime.nextAiringEpisode.episode}
-                            </div>
-                            <div class="font-semibold text-2xl flex items-center justify-center h-full">
-                                Date:
-                            </div>
-                            <div class="flex items-center justify-center h-full text-xl mt-1">
-                                {anime.nextAiringEpisode.airingAt}
-                            </div>
-                        </div>
+                        {/if}
                     {/if}
                 </div>
                 <div class="w-[50%] h-full">
@@ -195,6 +213,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+    {:else if loaded}
+        <div class="w-full h-full flex items-center justify-center text-center text-4xl font-bold text-white">
+            Anime Not fully uploaded or Visible
         </div>
     {/if}
 </div>

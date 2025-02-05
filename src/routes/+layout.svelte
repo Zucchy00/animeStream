@@ -54,7 +54,11 @@
 <div class={`w-screen h-screen flex flex-col`}>
     <div class="w-full h-[8%] border-b border-white flex">
         <div class="w-[20%] h-full flex items-center justify-center">
-            <button on:click={()=>{transitTo("/")}} class="h-[80%] aspect-square">
+            <button on:click={()=>{
+                inputValue = ""
+                updateInput(inputValue)
+                transitTo("/")
+            }} class="h-[80%] aspect-square">
                 <img src="/images/jollyRoger.svg" class="w-full h-full">
             </button>
         </div>

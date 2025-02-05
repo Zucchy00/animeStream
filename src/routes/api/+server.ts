@@ -43,17 +43,29 @@ export const GET: RequestHandler = async ({ url }) => {
             }
 
 
-            const lowerTitle = title?.toLowerCase().replace(/[-_\s]/g, "") ?? ""; // Remove "-", "_", and spaces
-            const lowerAnime = anime.toLowerCase().replace(/[-_\s]/g, ""); // Remove "-", "_", and spaces
-            const compatible = lowerTitle.includes(lowerAnime);
-            console.log("LowerTitle: "+lowerTitle)
-            console.log("LowerAnime:"+lowerAnime)
+            const lowerTitleStrict = title.toLowerCase().replace(/[-_:\s]/g, "") ?? ""; // Removes "-", "_" and spaces
+            const lowerTitleKeepSymbols = title.toLowerCase().replace(/\s+/g, "") ?? ""; // Removes only spaces, keeps "-" and "_"
+
+            const lowerAnimeStrict = anime.toLowerCase().replace(/[-_:\s]/g, ""); // Removes "-", "_" and spaces
+            const lowerAnimeKeepSymbols = anime.toLowerCase().replace(/\s+/g, ""); // Removes only spaces, keeps "-" and "_"
+
+            // Check if either variation matches
+            const compatible =
+                lowerTitleStrict.includes(lowerAnimeStrict) || // First check: strict match (no "-", "_", spaces)
+                lowerTitleKeepSymbols.includes(lowerAnimeKeepSymbols); // Second check: keeps "-" and "_", only removes spaces
+
+            console.log("LowerTitleStrict: " + lowerTitleStrict);
+            console.log("LowerTitleKeepSymbols: " + lowerTitleKeepSymbols);
+            console.log("LowerAnimeStrict: " + lowerAnimeStrict);
+            console.log("LowerAnimeKeepSymbols: " + lowerAnimeKeepSymbols);
+
+
             if (href && title && text && compatible) {
                 console.log({ href: `${ANIME_URL}${href}`, title, text })
                 results.push({ href: `${ANIME_URL}${href}`, title, text });
 
                 // Check if the title is an exact match
-                if (lowerTitle === lowerAnime) {
+                if (lowerTitleStrict == lowerAnimeStrict || lowerTitleKeepSymbols == lowerAnimeKeepSymbols) {
                     exactMatchFound = true;
                 }
 
@@ -80,7 +92,8 @@ export const GET: RequestHandler = async ({ url }) => {
         let bestMatch = results[0];  // Initialize with the first result
         // Prioritize exact matches first
         if (exactMatchFound) {
-            bestMatch = results.find(result => result.title?.toLowerCase().replace(/[-_\s]/g, "") ?? "" === anime.toLowerCase().replace(/[-_\s]/g, ""))!;
+            console.log("FOUND")
+            bestMatch = results.find(result => result.title?.toLowerCase().replace(/[-_:\s]/g, "") ?? "" === anime.toLowerCase().replace(/[-_:\s]/g, ""))!;
         } else {
             // If no exact match, choose the one most relevant to the search term
             bestMatch = results.sort((a, b) => {

@@ -6,7 +6,6 @@ Sveltekit based anime streaming website with webscraping api as usage (no link t
 * Using ![Anilist](https://github.com/anilist) API for images, descriptions and anime research
 
 ## Known bugs:
-* Find episodes of anime with "season" in it
 * Find movies (most of them are missing from the source)
 ## To do:
 * Make available anime dubbed ita ( not every anime and every episode are dubbed )

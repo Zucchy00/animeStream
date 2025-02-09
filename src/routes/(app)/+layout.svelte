@@ -1,8 +1,8 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import "../app.css";
+    import "../../app.css";
     import { Search } from "svelte-bootstrap-icons";
-    import { fade, updateFade, updateInput } from "../shared/sharedStore";
+    import { fade, updateFade, updateInput } from "../../shared/sharedStore";
     import { goto } from "$app/navigation";
     import { navigating } from '$app/stores';
     import { transitTo } from "$lib/logic/main";
@@ -18,7 +18,7 @@
 
     function UpdateResearch() {
         updateInput(inputValue ?? "")
-        goto("/")
+        goto("/search")
         clearTimeout(typingTimeout);
         urlOfGif = "/images/OkChibi.gif";
         typingTimeout = setTimeout(() => {
@@ -41,18 +41,19 @@
             clearTimeout(typingTimeout);
             typingTimeout = setTimeout(() => {
                 urlOfGif = "/images/OkChibi.gif";
+                if ($page.url.pathname != "/search") transitTo("/search")
                 typingTimeout = setTimeout(() => {
                     urlOfGif = "/images/WaitingChibi.gif";
                 }, 4000);
             }, 2000);
         }else {
-            goto("/")
+            goto("/search")
         }
     }
 </script>
 
 <div class={`w-screen h-screen flex flex-col`}>
-    <div class="w-full h-[8%] border-b border-white flex">
+    <div class="w-full h-[8%] bg-pure-black border-b border-white flex">
         <div class="w-[20%] h-full flex items-center justify-center">
             <button on:click={()=>{
                 inputValue = ""

@@ -1,7 +1,7 @@
 <script lang="ts">
     import CardElement from "$lib/components/CardElement.svelte";
     import { onMount } from "svelte";
-    import { inputZone } from "../shared/sharedStore";
+    import { inputZone } from "../../../shared/sharedStore";
     import { fetchAnime } from "$lib/logic/main";
     import { fade } from 'svelte/transition';
 

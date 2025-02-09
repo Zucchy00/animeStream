@@ -49,9 +49,7 @@
 
             // Fetch video URL
             let fixedAnimeRequested = animeRequested.toLowerCase()
-            fixedAnimeRequested = fixedAnimeRequested.replaceAll("season", "")
-            fixedAnimeRequested = fixedAnimeRequested.replaceAll(":", "")
-            const response = await fetch(`/api?anime=${type == "JPN" ? fixedAnimeRequested: fixedAnimeRequested+` (${type})`}&episode=${episode}`);
+            const response = await fetch(`/api/retrieveVideo?anime=${type == "JPN" ? fixedAnimeRequested: fixedAnimeRequested+` (${type})`}&episode=${episode}`);
             if (!response.ok) {
                 throw new Error(`Failed to fetch from API: ${response.statusText}`);
             }
@@ -67,7 +65,10 @@
             console.error('Error fetching data:', error.message);
             if(!retried) {
                 retried = true
+                animeRequested = animeRequested.toLowerCase()
                 animeRequested = animeRequested.replaceAll("-", " ")
+                animeRequested = animeRequested.replaceAll("season", " ")
+                animeRequested = animeRequested.replaceAll(":", " ")
                 fetchAnimeData();
             }
         }

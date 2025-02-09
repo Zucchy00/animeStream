@@ -1,5 +1,6 @@
 import { goto } from "$app/navigation";
 import { updateFade } from "../../shared/sharedStore";
+import base64url from 'base64url';
 
 export function sleep(ms:any) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -14,6 +15,34 @@ export function getCookie(name:string) {
     const parts= value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop()?.split(';').shift();
 }
+
+export function generateRandomState(length:number = 16) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let state = '';
+    for (let i = 0; i < length; i++) {
+        state += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return state;
+}
+
+export function parseJwtWithoutValidation (token:string) {
+    try {
+        // Split the JWT into its components (header, payload, signature)
+        const [header, payload] = token.split('.');
+
+        // Base64-decode the header and payload (these are base64url-encoded)
+        const decodedHeader = JSON.parse(base64url.decode(header));
+        const decodedPayload = JSON.parse(base64url.decode(payload));
+
+        return {
+            header: decodedHeader,
+            payload: decodedPayload
+        }
+    } catch (error:any) {
+        console.error('Error decoding token:', error.message);
+        return false
+    }
+};
 
 export async function fetchAnime(page = 1, perPage = 50, searchTerm = '') {
     const query = `

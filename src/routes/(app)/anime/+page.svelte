@@ -179,17 +179,19 @@
                         {/each}
                     </div>
                     <div class="w-full h-[70%] px-[5%] py-[3%]">
-                        <div class="w-full h-full bg-bright-pure-black rounded-3xl p-4 text-white overflow-y-scroll space-y-2">
-                            {#each displayedEpisodes as episode (episode.id)}
-                                <div transition:fade={{ duration: 700 }} class="flex items-center justify-between px-4 py-2 bg-pure-black rounded-lg hover:ring hover:ring-white transition-all duration-500">
-                                    <div>Episode {episode.number}</div>
-                                    <button on:click={()=>{
-                                        transitTo(`/video?id=${id}&anime=${anime.title}&episode=${episode.number}`)
-                                    }} class="bg-white text-black px-3 py-1 rounded-lg text-sm">
-                                        Watch
-                                    </button>
-                                </div>
-                            {/each}
+                        <div class="w-full h-full bg-bright-pure-black rounded-3xl overflow-hidden">
+                            <div class="w-full h-full p-4 text-white overflow-y-scroll space-y-2">
+                                {#each displayedEpisodes as episode (episode.id)}
+                                    <div transition:fade={{ duration: 700 }} class="flex items-center justify-between px-4 py-2 bg-pure-black rounded-lg hover:ring hover:ring-white transition-all duration-500">
+                                        <div>Episode {episode.number}</div>
+                                        <button on:click={()=>{
+                                            transitTo(`/video?id=${id}&anime=${anime.title}&episode=${episode.number}`)
+                                        }} class="bg-white text-black px-3 py-1 rounded-lg text-sm">
+                                            Watch
+                                        </button>
+                                    </div>
+                                {/each}
+                            </div>
                         </div>
                     </div>
                 </div>

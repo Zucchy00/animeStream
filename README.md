@@ -8,7 +8,6 @@ Sveltekit based anime streaming website with webscraping api as usage (no link t
 ## Known bugs:
 * Find movies (most of them are missing from the source)
 ## To do:
-* Make available anime dubbed ita ( not every anime and every episode are dubbed )
 * Add Https and secure connection with account authentication using database
 * Add Netflix like anime advicing with categories ( Some Hanime are already available )
 * Remove the different seasons from default view to prevent difficulties with scraping

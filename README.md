@@ -3,7 +3,7 @@ Sveltekit based anime streaming website with webscraping api as usage (no link t
 
 ## Features:
 * Available Dub and Sub anime ita
-* Using ![Anilist](https://github.com/anilist) API for images, descriptions and anime research
+* Using [Anilist](https://github.com/anilist) API for images, descriptions and anime research
 
 ## Known bugs:
 * Find movies (most of them are missing from the source)
